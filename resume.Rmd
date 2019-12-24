@@ -1,0 +1,134 @@
+---
+title: Yifei Liu's Resume"
+author: YIfei Liu
+date: "`r Sys.Date()`"
+output:
+  pagedown::html_resume:
+    css: ['css/custom_resume.css', 'css/styles.css', 'resume']
+    # set it to true for a self-contained HTML page but it'll take longer to render
+    self_contained: true
+---
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  results='asis', 
+  echo = FALSE
+)
+library(tidyverse)
+library(glue)
+
+# Set this to true to have links turned into footnotes at the end of the document
+PDF_EXPORT <- T
+
+# Holds all the links that were inserted for placement at the end
+links <- c()
+
+source('parsing_functions.R')
+
+
+# First let's get the data, filtering to only the items tagged as
+# Resume items
+position_data <- read_csv('positions.csv') %>% 
+  filter(in_resume) %>% 
+  mutate(
+    # Build some custom sections by collapsing others
+    section = case_when(
+      section %in% c('research_positions', 'industry_positions') ~ 'positions', 
+      section %in% c('data_science_writings', 'by_me_press') ~ 'writings',
+      TRUE ~ section
+    )
+  ) 
+
+```
+
+
+Aside
+================================================================================
+
+
+![logo](beta_dist.png){width=100%}
+
+Skills & Tools {#skills}
+--------------------------------------------------------------------------------
+
+<i class="fab fa-r-project"></i> R
+
+<i class="fas fa-chart-line"></i> ggplot2
+
+<i class="fas fa-table"></i> tidyverse
+
+<i class="fab fa-python"></i> Python
+
+<i class="fab fa-git"></i> Git
+
+<i class="fab fa-github"></i> Github
+
+<i class="fas fa-tachometer-alt"></i> Shiny
+
+
+
+Data Analysis:
+
+- Machine Learning
+- Time Series Analysis
+- Spatial Analysis
+
+Language:
+
+- Mandarin, native
+- English, proficient
+
+
+Contact {#contact}
+--------------------------------------------------------------------------------
+
+- <i class="fa fa-envelope"></i> yifei.liu@temple.edu
+- <i class="fa fa-twitter"></i> moxiaoranying
+- <i class="fa fa-github"></i> [moxiaoran](https://github.com/moxiaoran)
+- <i class="fa fa-link"></i> [yifeiliu](https://www.yifeiliutemple.com/)
+- <i class="fa fa-phone"></i> (267) 273-9052
+
+
+Open Source Contributions {#open-source}
+--------------------------------------------------------------------------------
+
+- `Tidytuesday`: My contributions to the #TidyTuesday weekly data project
+
+- `PG&E power shutdown`: Shiny Dashboard Application
+
+Main
+================================================================================
+
+Yifei Liu {#title}
+--------------------------------------------------------------------------------
+
+```{r}
+intro_text <- "I’m Yifei Liu and I want to be a Data Analyst. I like making interesting charts, quality of government, and programming language R.
+
+Currently searching for a data science position that allows me to build tools using visualization and machine learning to help people explore and understand their data. "
+
+
+cat(sanitize_links(intro_text))
+```
+
+
+
+Education {data-icon=graduation-cap data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r}
+position_data %>% print_section('education')
+```
+
+
+
+Experience {data-icon=suitcase}
+--------------------------------------------------------------------------------
+
+```{r}
+position_data %>% print_section('positions')
+```
+
+
+
